@@ -1,53 +1,45 @@
 n = int(input())
 
-a = list(map(int,input().split(' ')))
-
-dp = [0] * len(a)
-
-inc_dp = [0] * len(a)
-inc_dp[0] = 1
-
-dec_dp = [0] * len(a)
-
-#증가하는 수열 
-
-for i in range(len(inc_dp)):
-    max_dp = 0
-
-    for j in range(0,i,1):
-        if a[j] < a[i] and max_dp < inc_dp[j]:      
-            max_dp = inc_dp[j]
-            
-    inc_dp[i] = max_dp + 1
-
-#i번째마다의 감소하는 수열
+lst = list(map(int, input().split(' ')))
 
 
-for k in range(len(dec_dp)):
-    
-    # k를 기준으로 뒷부분만 slicing
-    
-    temp_a = a[k:]
-    temp_a = list(reversed(temp_a))
-    
-    temp_dec_dp = [0] * len(temp_a)
+def inc_bitonic(lst):
+    dp = [0] * len(lst)
+    dp[0] = 1
 
-    #temp_a에 대해서 증가하는 부분 수열
-    for i in range(len(temp_a)):
+    for i in range(len(lst)):
         max_dp = 0
-
-        for j in range(0,i,1):
-            if temp_a[j] < temp_a[i] and max_dp < temp_dec_dp[j]:      
-                max_dp = temp_dec_dp[j]
-
-        temp_dec_dp[i] = max_dp + 1
-    
-    dec_dp[k] = temp_dec_dp[-1]
-    
+        for j in range(0, i, 1):
+            if lst[j] < lst[i] and dp[j] > max_dp:
+                max_dp = dp[j]
+        dp[i] = max_dp + 1
+    return dp
 
 
-for i in range(len(dp)):
-    
-    dp[i] = inc_dp[i] + dec_dp[i] - 1
-    
-print(max(dp))
+def dec_bitonic(lst):
+    dp = [0] * len(lst)
+    dp[-1] = 1
+
+    for i in reversed(range(len(lst))):
+        max_dp = 0
+        for j in range(len(lst)-1, i-1, -1):
+            if lst[j] < lst[i] and dp[j] > max_dp:
+                max_dp = dp[j]
+        dp[i] = max_dp + 1
+    return dp
+
+
+def sol(lst):
+
+    max_bitonic = 0
+
+    inc = inc_bitonic(lst)
+    dec = dec_bitonic(lst)
+
+    for ele1, ele2 in zip(inc, dec):
+        if ele1 + ele2 > max_bitonic:
+            max_bitonic = ele1 + ele2
+
+    return max_bitonic - 1
+
+print(sol(lst))
