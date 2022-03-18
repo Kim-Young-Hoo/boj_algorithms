@@ -1,0 +1,39 @@
+def solution(s):
+    answer = ""
+
+    dictionary = {
+        "zero": 0,
+        "one": 1,
+        "two": 2,
+        "three": 3,
+        "four": 4,
+        "five": 5,
+        "six": 6,
+        "seven": 7,
+        "eight": 8,
+        "nine": 9
+    }
+
+    current_string = ""
+    for character in s:
+        if not character.isdigit():
+            current_string += str(character)
+
+            if current_string in dictionary:
+                answer += str(dictionary[current_string])
+                current_string = ""
+
+        else:
+            if len(current_string) > 0 and current_string in dictionary:
+                answer += str(dictionary[current_string])
+                current_string = ""
+            answer += str(character)
+
+
+
+    return int(answer)
+
+
+s = "123"
+print(solution(s))
+
