@@ -1,24 +1,35 @@
-import heapq
 import sys
+import heapq
+from collections import deque
 
-N, K = map(int, sys.stdin.readline().split())
+n, k = map(int, input().split(' '))
 
-jewelryList = [list(map(int, sys.stdin.readline().split())) for _ in range(N)]
-bagList = [int(sys.stdin.readline()) for _ in range(K)]
-jewelryList.sort()
-bagList.sort()
+jewels = []
+for i in range(n):
+    jewels.append(list(map(int, sys.stdin.readline().split())))
+jewels = sorted(jewels)
 
-result = 0
-temp = []
+bags = []
+for i in range(k):
+    heapq.heappush(bags, int(sys.stdin.readline()))
 
-for bagWeight in bagList:
-    while jewelryList and bagWeight >= jewelryList[0][0]:
-        heapq.heappush(temp, -jewelryList[0][1])  # Max heap
-        heapq.heappop(jewelryList)
 
-    if temp:
-        result += heapq.heappop(temp)
-    elif not jewelryList:
-        break
+def solution(jewels, bags):
+    cnt = 0
+    jewel_heap = []
 
-print(-result)
+    while bags:
+        bag = heapq.heappop(bags)
+
+        while jewels and bag >= jewels[0][0]:
+            heapq.heappush(jewel_heap, -jewels[0][1])
+            heapq.heappop(jewels)
+
+        if jewel_heap:
+            cnt += heapq.heappop(jewel_heap)
+        elif not jewels:
+            break
+    return -cnt
+
+
+print(solution(jewels, bags))
