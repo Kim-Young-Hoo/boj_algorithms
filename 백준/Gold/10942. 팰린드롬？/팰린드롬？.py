@@ -11,8 +11,10 @@ for i in range(n):
 
 
 def solution(s, e):
-    if dp_matrix[s][e] > 0:
+    if dp_matrix[s][e] == 1:
         return 1
+    if dp_matrix[s][e] == 0:
+        return 0
 
     if s >= e:
         return 1
