@@ -1,0 +1,52 @@
+from itertools import product
+
+
+def solution(n, info):
+    answer = [0] * 11
+    items = [0, 1]
+
+    max_diff = 0
+
+    for item in product(items, repeat=11):
+        current_path = [0] * 11
+
+        for i in range(11):
+            if item[i]:
+                current_path[i] = info[i] + 1
+        if sum(current_path) > n:
+            continue
+
+        if sum(current_path) < n:
+            current_path[-1] = n - sum(current_path)
+
+        lion_score = 0
+        apeach_score = 0
+
+        for i in range(11):
+            if info[i]:
+                if current_path[i] > info[i]:
+                    apeach_score += 10 - i
+                else:
+                    lion_score += 10 - i
+            else:
+                if current_path[i]:
+                    apeach_score += 10 - i
+
+        if apeach_score - lion_score > 0:
+            if apeach_score - lion_score > max_diff:
+                max_diff = apeach_score - lion_score
+                answer = current_path
+            elif apeach_score - lion_score == max_diff:
+                for j in reversed(range(len(current_path))):
+                    if current_path[j] and not answer[j]:
+                        max_diff = apeach_score - lion_score
+                        answer = current_path
+                        break
+                    elif not current_path[j] and answer[j]:
+                        break
+
+    if max_diff == 0:
+        return [-1]
+    return answer
+
+
