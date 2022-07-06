@@ -1,38 +1,32 @@
 n = int(input())
-cards = list(map(int, input().split(' ')))
-cards = sorted(cards)
-cards.insert(0, float("-inf"))
+lst = list(map(int, input().split(' ')))
+lst = sorted(lst)
 m = int(input())
 prob = list(map(int, input().split(' ')))
 
 
-
-def check(x, index):
-    return x <= cards[index]
-
-
-def solution(x):
-    low = 0
-    high = len(cards) - 1
-
-    while low + 1 < high:
-        mid = (low + high) // 2
-
-        if check(x, low) == check(x, mid):
-            low = mid
+def recursive_bin_search(low, high, key):
+    if low == high:
+        if lst[low] == key:
+            return 1
         else:
-            high = mid
+            return 0
 
-    if x == cards[low]:
-        return "1"
+    elif low > high:
+        return 0
 
-    if x == cards[high]:
-        return "1"
     else:
-        return "0"
+        mid = (low + high) // 2
+        if lst[mid] == key:
+            return 1
+        elif lst[mid] > key:
+            return recursive_bin_search(low, mid - 1, key)
+        else:
+            return recursive_bin_search(mid + 1, high, key)
 
 
 answer = []
-for x in prob:
-    answer.append(solution(x))
-print(" ".join(answer))
+
+for i in range(m):
+    answer.append(recursive_bin_search(0, len(lst) - 1, prob[i]))
+print(" ".join(map(str, answer)))
