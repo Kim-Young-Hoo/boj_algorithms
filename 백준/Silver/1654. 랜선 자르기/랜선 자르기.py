@@ -1,30 +1,31 @@
+"""
+k보다 많거나 같다면, mid를 키워야됨
+k보다 작다면, mid를 작게해야됨
+"""
+
 import sys
 
-n, m = map(int, input().split(' '))
-
+k, n = map(int, input().split(' '))
 lst = []
-for i in range(n):
-    lst.append(int(sys.stdin.readline()))
+for _ in range(k):
+    lst.append(int(sys.stdin.readline().rstrip()))
+
+lst.sort()
+
+start = 1
+end = lst[-1]
 
 
-def solution(n, m, lst):
-    lst = sorted(lst)
-    left = 1
-    right = lst[-1]
-
-    while left <= right:
-
-        mid = (left + right) // 2
-        current_sum = 0
-        for ele in lst:
-            current_sum += ele // mid
-
-        if current_sum < m:
-            right = mid - 1
-        elif current_sum >= m:
-            left = mid + 1
-
-    return right
+def decision(h, n):
+    return sum([ele // h for ele in lst]) >= n
 
 
-print(solution(n, m, lst))
+while start <= end:
+    mid = (start + end) // 2
+
+    if decision(mid, n):
+        start = mid + 1
+    else:
+        end = mid - 1
+
+print(end)
