@@ -27,21 +27,5 @@ def solution(user_id, banned_id):
             for j in range(len(lst[i])):
                 if not pop & 1 << user_id.index(lst[i][j]):
                     temp.append(pop | 1 << user_id.index(lst[i][j]))
-        comb = list(set(temp))
+        comb = temp
     return len(set(comb))
-
-
-'''
-frodo, fradi
-frodo, crodo
-frodo, fradi, crodo, abc123
-frodoc
-
-frodo, crodo
-frodo, crodo
-abc123, 
-
-
-'''
-
-print(solution(["frodo", "fradi", "crodo", "abc123", "frodoc"], ["*rodo", "*rodo", "******"]))
